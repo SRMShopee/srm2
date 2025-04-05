@@ -2,6 +2,9 @@ import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -27,6 +30,8 @@ const config = {
         primary: {
           DEFAULT: "#FF5000", // Shopee orange
           foreground: "#FFFFFF", // White text on orange
+          dark: "#E64600", // Darker shade for hover states
+          light: "#FF7A40", // Lighter shade for highlights
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -43,6 +48,8 @@ const config = {
         accent: {
           DEFAULT: "#FF5000", // Shopee orange as accent
           foreground: "#FFFFFF",
+          dark: "#E64600", // Darker shade for hover states
+          light: "#FF7A40", // Lighter shade for highlights
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -57,6 +64,11 @@ const config = {
           light: "#FFFFFF",
           dark: "#333333",
           gray: "#F5F5F5",
+          orange_dark: "#E64600", // Darker orange for dark mode
+          orange_light: "#FF7A40", // Lighter orange for highlights
+          dark_bg: "#1A1A1A", // Dark background for dark mode
+          dark_card: "#262626", // Dark card background for dark mode
+          dark_border: "#404040", // Dark border for dark mode
         },
       },
       borderRadius: {

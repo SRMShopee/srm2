@@ -1,48 +1,30 @@
-import { createServerClient } from "@supabase/ssr";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+/**
+ * Middleware function to handle authentication and protected routes
+ * Uses our custom session management instead of Supabase auth
+ */
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return req.cookies.getAll().map(({ name, value }) => ({
-            name,
-            value,
-          }));
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            req.cookies.set(name, value);
-            res.cookies.set(name, value, options);
-          });
-        },
-      },
-    },
-  );
-
-  // Refresh session if expired - required for Server Components
-  const {
-    data: { session },
-    error,
-  } = await supabase.auth.getSession();
-
-  if (error) {
-    console.error("Auth session error:", error);
-  }
 
   // Get the pathname from the URL
   const { pathname } = req.nextUrl;
 
-  // If accessing dashboard routes without a session, redirect to login
-  if (pathname.startsWith("/dashboard") && !session) {
+  // Check for authentication using session cookie value, not just presence
+  const sessionCookie = req.cookies.get("session");
+  const authStatusCookie = req.cookies.get("auth_status");
+  const isAuthenticated = sessionCookie?.value || authStatusCookie?.value;
+
+  // If accessing dashboard routes without authentication, redirect to login
+  if (pathname.startsWith("/dashboard") && !isAuthenticated) {
     const redirectUrl = new URL("/sign-in", req.url);
     return NextResponse.redirect(redirectUrl);
+  }
+
+  // Add session header to response if authenticated
+  if (isAuthenticated) {
+    res.headers.set("x-has-session", "true");
   }
 
   return res;

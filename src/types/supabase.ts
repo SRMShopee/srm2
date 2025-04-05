@@ -11,29 +11,29 @@ export type Database = {
     Tables: {
       cities: {
         Row: {
+          cep: string;
+          created_at: string | null;
+          hub_id: string;
           id: number;
           name: string;
-          hub_id: string;
-          created_at: string;
-          updated_at: string;
         };
         Insert: {
+          cep: string;
+          created_at?: string | null;
+          hub_id: string;
           id?: number;
           name: string;
-          hub_id: string;
-          created_at?: string;
-          updated_at?: string;
         };
         Update: {
+          cep?: string;
+          created_at?: string | null;
+          hub_id?: string;
           id?: number;
           name?: string;
-          hub_id?: string;
-          created_at?: string;
-          updated_at?: string;
         };
         Relationships: [
           {
-            foreignKeyName: "cities_hub_id_hubs_id_fk";
+            foreignKeyName: "cities_hub_id_fkey";
             columns: ["hub_id"];
             isOneToOne: false;
             referencedRelation: "hubs";
@@ -41,161 +41,240 @@ export type Database = {
           },
         ];
       };
-      hubs: {
+      disp: {
         Row: {
-          id: string;
-          name: string;
-          city: string;
           created_at: string;
-          updated_at: string;
+          disp: boolean | null;
+          id: number;
+          name: string | null;
+          turno: string | null;
+          user_id: string;
+          vehicle: string | null;
         };
         Insert: {
-          id?: string;
-          name: string;
-          city: string;
           created_at?: string;
-          updated_at?: string;
+          disp?: boolean | null;
+          id?: number;
+          name?: string | null;
+          turno?: string | null;
+          user_id?: string;
+          vehicle?: string | null;
         };
         Update: {
+          created_at?: string;
+          disp?: boolean | null;
+          id?: number;
+          name?: string | null;
+          turno?: string | null;
+          user_id?: string;
+          vehicle?: string | null;
+        };
+        Relationships: [];
+      };
+      hubs: {
+        Row: {
+          cep: string;
+          city: string;
+          code: string;
+          complement: string | null;
+          created_at: string | null;
+          id: string;
+          name: string;
+          neighborhood: string;
+          residence_number: number;
+          state: Database["public"]["Enums"]["state_enum"];
+          street: string;
+          updated_at: string | null;
+        };
+        Insert: {
+          cep: string;
+          city: string;
+          code: string;
+          complement?: string | null;
+          created_at?: string | null;
+          id?: string;
+          name: string;
+          neighborhood: string;
+          residence_number: number;
+          state: Database["public"]["Enums"]["state_enum"];
+          street: string;
+          updated_at?: string | null;
+        };
+        Update: {
+          cep?: string;
+          city?: string;
+          code?: string;
+          complement?: string | null;
+          created_at?: string | null;
           id?: string;
           name?: string;
-          city?: string;
-          created_at?: string;
-          updated_at?: string;
+          neighborhood?: string;
+          residence_number?: number;
+          state?: Database["public"]["Enums"]["state_enum"];
+          street?: string;
+          updated_at?: string | null;
         };
         Relationships: [];
       };
       route_interests: {
         Row: {
+          created_at: string | null;
           id: number;
-          user_id: string;
-          city_id: number;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: number;
-          user_id: string;
-          city_id: number;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: number;
-          user_id?: string;
-          city_id?: number;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "route_interests_user_id_users_id_fk";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "route_interests_city_id_cities_id_fk";
-            columns: ["city_id"];
-            isOneToOne: false;
-            referencedRelation: "cities";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      routes: {
-        Row: {
-          id: string;
-          name: string;
-          description: string | null;
-          city_id: number;
-          shift: Database["public"]["Enums"]["route_shift"];
-          status: Database["public"]["Enums"]["route_status"];
-          packages: number;
-          distance: string | null;
-          estimated_time: string | null;
-          driver_id: string | null;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          name: string;
-          description?: string | null;
-          city_id: number;
-          shift: Database["public"]["Enums"]["route_shift"];
-          status?: Database["public"]["Enums"]["route_status"];
-          packages?: number;
-          distance?: string | null;
-          estimated_time?: string | null;
-          driver_id?: string | null;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          name?: string;
-          description?: string | null;
-          city_id?: number;
-          shift?: Database["public"]["Enums"]["route_shift"];
-          status?: Database["public"]["Enums"]["route_status"];
-          packages?: number;
-          distance?: string | null;
-          estimated_time?: string | null;
-          driver_id?: string | null;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "routes_city_id_cities_id_fk";
-            columns: ["city_id"];
-            isOneToOne: false;
-            referencedRelation: "cities";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "routes_driver_id_users_id_fk";
-            columns: ["driver_id"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      user_blocked_routes: {
-        Row: {
-          id: number;
-          user_id: string;
           route_id: string;
-          created_at: string;
-          updated_at: string;
+          user_id: string;
         };
         Insert: {
+          created_at?: string | null;
           id?: number;
-          user_id: string;
           route_id: string;
-          created_at?: string;
-          updated_at?: string;
+          user_id: string;
         };
         Update: {
+          created_at?: string | null;
           id?: number;
-          user_id?: string;
           route_id?: string;
-          created_at?: string;
-          updated_at?: string;
+          user_id?: string;
         };
         Relationships: [
           {
-            foreignKeyName: "user_blocked_routes_route_id_routes_id_fk";
+            foreignKeyName: "route_interests_route_id_fkey";
             columns: ["route_id"];
             isOneToOne: false;
             referencedRelation: "routes";
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "user_blocked_routes_user_id_users_id_fk";
+            foreignKeyName: "route_interests_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      routes: {
+        Row: {
+          city_id: number;
+          content: string;
+          created_at: string | null;
+          distance: string;
+          hub_id: string;
+          id: string;
+          name: string;
+          neighborhoods: string;
+          packages: number;
+          shift: Database["public"]["Enums"]["routes_shift"];
+          status: Database["public"]["Enums"]["routes_status"] | null;
+          updated_at: string | null;
+          loading_time: string | null;
+        };
+        Insert: {
+          city_id: number;
+          content: string;
+          created_at?: string | null;
+          distance: string;
+          hub_id: string;
+          id?: string;
+          name: string;
+          neighborhoods: string;
+          packages: number;
+          shift: Database["public"]["Enums"]["routes_shift"];
+          status?: Database["public"]["Enums"]["routes_status"] | null;
+          updated_at?: string | null;
+          loading_time?: string | null;
+        };
+        Update: {
+          city_id?: number;
+          content?: string;
+          created_at?: string | null;
+          distance?: string;
+          hub_id?: string;
+          id?: string;
+          name?: string;
+          neighborhoods?: string;
+          packages?: number;
+          shift?: Database["public"]["Enums"]["routes_shift"];
+          status?: Database["public"]["Enums"]["routes_status"] | null;
+          updated_at?: string | null;
+          loading_time?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "routes_hub_id_fkey";
+            columns: ["hub_id"];
+            isOneToOne: false;
+            referencedRelation: "hubs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      user_blocked_routes: {
+        Row: {
+          created_at: string | null;
+          id: number;
+          route_id: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string | null;
+          id?: number;
+          route_id: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string | null;
+          id?: number;
+          route_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "user_blocked_routes_route_id_fkey";
+            columns: ["route_id"];
+            isOneToOne: false;
+            referencedRelation: "routes";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "user_blocked_routes_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      user_preferences: {
+        Row: {
+          backup_regions: number[] | null;
+          created_at: string | null;
+          hub_id: string | null;
+          id: number;
+          primary_regions: number[] | null;
+          updated_at: string | null;
+          user_id: string;
+        };
+        Insert: {
+          backup_regions?: number[] | null;
+          created_at?: string | null;
+          hub_id?: string | null;
+          id?: number;
+          primary_regions?: number[] | null;
+          updated_at?: string | null;
+          user_id: string;
+        };
+        Update: {
+          backup_regions?: number[] | null;
+          created_at?: string | null;
+          hub_id?: string | null;
+          id?: number;
+          primary_regions?: number[] | null;
+          updated_at?: string | null;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "user_preferences_user_id_fkey";
             columns: ["user_id"];
             isOneToOne: false;
             referencedRelation: "users";
@@ -205,44 +284,53 @@ export type Database = {
       };
       users: {
         Row: {
-          id: string;
-          email: string;
-          name: string;
-          driver_id: number | null;
-          phone: string | null;
-          role: Database["public"]["Enums"]["user_permission"];
-          state: Database["public"]["Enums"]["state"];
+          account_locked_until: string | null;
+          created_at: string | null;
+          driver_id: string | null;
+          failed_login_attempts: number | null;
           hub_id: string;
-          created_at: string;
-          updated_at: string;
+          id: string;
+          last_failed_login: string | null;
+          last_login: string | null;
+          name: string;
+          permissions: Database["public"]["Enums"]["user_permissions"] | null;
+          phone: string;
+          updated_at: string | null;
+          vehicle: string | null;
         };
         Insert: {
-          id: string;
-          email: string;
-          name: string;
-          driver_id?: number | null;
-          phone?: string | null;
-          role?: Database["public"]["Enums"]["user_permission"];
-          state?: Database["public"]["Enums"]["state"];
+          account_locked_until?: string | null;
+          created_at?: string | null;
+          driver_id?: string | null;
+          failed_login_attempts?: number | null;
           hub_id: string;
-          created_at?: string;
-          updated_at?: string;
+          id?: string;
+          last_failed_login?: string | null;
+          last_login?: string | null;
+          name: string;
+          permissions?: Database["public"]["Enums"]["user_permissions"] | null;
+          phone: string;
+          updated_at?: string | null;
+          vehicle?: string | null;
         };
         Update: {
-          id?: string;
-          email?: string;
-          name?: string;
-          driver_id?: number | null;
-          phone?: string | null;
-          role?: Database["public"]["Enums"]["user_permission"];
-          state?: Database["public"]["Enums"]["state"];
+          account_locked_until?: string | null;
+          created_at?: string | null;
+          driver_id?: string | null;
+          failed_login_attempts?: number | null;
           hub_id?: string;
-          created_at?: string;
-          updated_at?: string;
+          id?: string;
+          last_failed_login?: string | null;
+          last_login?: string | null;
+          name?: string;
+          permissions?: Database["public"]["Enums"]["user_permissions"] | null;
+          phone?: string;
+          updated_at?: string | null;
+          vehicle?: string | null;
         };
         Relationships: [
           {
-            foreignKeyName: "users_hub_id_hubs_id_fk";
+            foreignKeyName: "users_hub_id_fkey";
             columns: ["hub_id"];
             isOneToOne: false;
             referencedRelation: "hubs";
@@ -258,10 +346,37 @@ export type Database = {
       [_ in never]: never;
     };
     Enums: {
-      route_shift: "AM" | "PM" | "OUROBOROS";
-      route_status: "PENDENTE" | "ATRIBUÍDA" | "CONCLUÍDA";
-      state: "active" | "inactive" | "blocked";
-      user_permission: "admin" | "driver";
+      routes_shift: "AM" | "PM" | "OUROBOROS";
+      routes_status: "pending" | "accepted" | "under-review";
+      state_enum:
+        | "AC"
+        | "AL"
+        | "AP"
+        | "AM"
+        | "BA"
+        | "CE"
+        | "DF"
+        | "ES"
+        | "GO"
+        | "MA"
+        | "MT"
+        | "MS"
+        | "MG"
+        | "PA"
+        | "PB"
+        | "PR"
+        | "PE"
+        | "PI"
+        | "RJ"
+        | "RN"
+        | "RS"
+        | "RO"
+        | "RR"
+        | "SC"
+        | "SP"
+        | "SE"
+        | "TO";
+      user_permissions: "admin" | "USER";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -349,4 +464,19 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never;
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database;
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never;
